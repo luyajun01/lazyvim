@@ -16,10 +16,33 @@ return {
   --   },
   --   version = "^1.0.0", -- optional: only update when a new 1.x version is released
   -- },
+
+  -- {
+  --   "stevearc/conform.nvim",
+  --   -- event = 'BufWritePre', -- uncomment for format on save
+  --   opts = require("configs.conform"),
+  -- },
+  {
+    "mg979/vim-visual-multi",
+    branch = "master",
+    event = "VeryLazy",
+  },
   {
     "nvim-zh/colorful-winsep.nvim",
     config = true,
     event = { "WinLeave" },
+  },
+  {
+    "HakonHarnes/img-clip.nvim",
+    event = "VeryLazy",
+    opts = {
+      -- add options here
+      -- or leave it empty to use the default settings
+    },
+    keys = {
+      -- suggested keymap
+      { "<leader>p", "<cmd>PasteImage<cr>", desc = "Paste image from system clipboard" },
+    },
   },
   {
     "kylechui/nvim-surround",

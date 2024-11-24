@@ -171,11 +171,25 @@ o.guifont = "Inconsolata Nerd Font Mono,TsangerJinKai03:h18:#e-subpixelantialias
 --o.guifont = "TsangerJinKai03:h12:#e-subpixelantialias"
 if g.neovide then
   g.neovide_transparency = 1.0
+  -- macOS 专属：窗口模糊效果
+  g.neovide_window_blurred = true
+  -- macOS 专属：Option 键作为 Meta 键
+  g.neovide_input_macos_option_key_is_meta = "only_left"
   g.neovide_refresh_rate = 144
   g.neovide_cursor_vfx_mode = "ripple"
-  g.neovide_cursor_animation_length = 0.03
-  g.neovide_cursor_trail_size = 0.9
+  g.neovide_cursor_animation_length = 0.13
+  g.neovide_cursor_trail_size = 0.8
   g.neovide_remember_window_size = true
+  -- 光标粒子效果（可选：railgun, torpedo, pixiedust, sonicboom, ripple, wireframe）
+  g.neovide_cursor_vfx_mode = "pixiedust"
+  g.neovide_scroll_animation_length = 0.3
+  -- 浮动窗口的阴影（美化）
+  g.neovide_floating_shadow = true
+  g.neovide_floating_z_height = 10
+  g.neovide_light_angle_degrees = 45
+  g.neovide_light_radius = 5
+  g.neovide_confirm_quit = true
+  g.neovide_refresh_rate_idle = 5
 end
 
 vim.cmd.aunmenu([[PopUp.How-to\ disable\ mouse]])
@@ -193,5 +207,22 @@ vim.paste = (function(overridden)
     overridden(lines, phase)
   end
 end)(vim.paste)
+
+-- IME 输入法切换优化
+local function set_ime(args)
+  if args.event:match("Enter$") then
+    vim.g.neovide_input_ime = true
+  else
+    vim.g.neovide_input_ime = false
+  end
+end
+
+local ime_input = vim.api.nvim_create_augroup("ime_input", { clear = true })
+
+vim.api.nvim_create_autocmd({ "InsertEnter", "InsertLeave" }, {
+  group = ime_input,
+  pattern = "*",
+  callback = set_ime,
+})
 
 -- init.lua
